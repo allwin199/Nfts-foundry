@@ -1,0 +1,11 @@
+{
+    "name": "PUGGY",
+    "description": "This is the real PUG",
+    "image": "ipfs://bafybeicdlctvdhgvhnu5xqjm6tvjzaw3oyllq77deguvllb52hzu3ur76m/",
+    "attributes": [
+        {
+            "trait_type": "cuteness",
+            "value": 100
+        }
+    ]
+}
