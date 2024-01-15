@@ -3,7 +3,7 @@ pragma solidity 0.8.20;
 
 import {Script} from "forge-std/Script.sol";
 
-contract MintNft is Script {
+contract MintBasicNft is Script {
     function run() external {
         // get the deployed contract using devopstools
     }
