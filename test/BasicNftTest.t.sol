@@ -39,7 +39,7 @@ contract BasicNftTest is Test {
 
     function test_UserCanMint_AndHaveBalance() public {
         vm.startPrank(user);
-        basicNft.mint(PUG_TOKEN_URI);
+        basicNft.mintNft(PUG_TOKEN_URI);
         vm.stopPrank();
 
         uint256 userBalance = basicNft.balanceOf(user);
@@ -48,7 +48,7 @@ contract BasicNftTest is Test {
 
     function test_UserCanMint_AndTokenUri_IsSet() public {
         vm.startPrank(user);
-        basicNft.mint(PUG_TOKEN_URI);
+        basicNft.mintNft(PUG_TOKEN_URI);
         vm.stopPrank();
 
         string memory tokenUri = basicNft.tokenURI(0);

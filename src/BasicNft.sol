@@ -9,10 +9,10 @@ contract BasicNft is ERC721 {
 
     constructor() ERC721("Dogie", "DOG") {}
 
-    function mint(string memory tokenUri) public {
+    function mintNft(string memory tokenUri) public {
         s_tokenIdToUri[s_tokenCounter] = tokenUri;
         _safeMint(msg.sender, s_tokenCounter);
-        s_tokenCounter++;
+        s_tokenCounter = s_tokenCounter + 1;
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
