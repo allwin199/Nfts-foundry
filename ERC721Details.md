@@ -22,3 +22,9 @@ contract ERC721 {
 ```
 
 -   In ERC721 mapping will hold each unique token and who is the owner of it
+
+```
+contract ERC721 {
+
+}
+```
