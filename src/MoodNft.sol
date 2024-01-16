@@ -22,12 +22,13 @@ contract MoodNft is ERC721 {
     // encoded svg images are passed to save gas
     // ImageUri's are passed not the tokenUri
     constructor(string memory happySvgImageUri, string memory sadSvgImageUri) ERC721("Mood Nft", "MOOD") {
+        s_tokenCounter = 0;
         s_happySvgImageUri = happySvgImageUri;
         s_sadSvgImageUri = sadSvgImageUri;
     }
 
     function flipMood(uint256 tokenId) public {
-        if (currentMood == Mood.HAPPY) {
+        if (s_tokenIdToMood[tokenId] == Mood.HAPPY) {
             s_tokenIdToMood[tokenId] = Mood.SAD;
         } else {
             s_tokenIdToMood[tokenId] = Mood.HAPPY;
@@ -35,8 +36,8 @@ contract MoodNft is ERC721 {
     }
 
     function mintNft() public {
-        s_tokenIdToMood[s_tokenCounter] = Mood.HAPPY;
         _safeMint(msg.sender, s_tokenCounter);
+        s_tokenIdToMood[s_tokenCounter] = Mood.HAPPY;
         s_tokenCounter = s_tokenCounter + 1;
     }
 
@@ -64,5 +65,13 @@ contract MoodNft is ERC721 {
         );
 
         return string(abi.encodePacked("data:application/json;base64,", Base64.encode(dataURI)));
+    }
+
+    function getCurrentMood(uint256 tokenId) public view returns (uint256) {
+        return uint256(s_tokenIdToMood[tokenId]);
+    }
+
+    function getTokenCounter() public view returns (uint256) {
+        return s_tokenCounter;
     }
 }
