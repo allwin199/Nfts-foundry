@@ -1,25 +1,64 @@
+// Layout of Contract:
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// internal & private view & pure functions
+// external & public view & pure functions
+
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
+//////////////////////////////////////////////////////////
+//////////////////////  Imports  /////////////////////////
+//////////////////////////////////////////////////////////
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 
+/// @title Mood NFT
+/// @author Prince Allwin
+/// @notice Mood NFT metadata is 100% hosted on-chain
 contract MoodNft is ERC721 {
+    //////////////////////////////////////////////////////////
+    ////////////////////  Custom Errors  /////////////////////
+    //////////////////////////////////////////////////////////
     error MoodNft__OnlyOwnerCanFlipMood();
 
-    uint256 private s_tokenCounter;
-
-    // dynamic tokenUri
-    string private s_imageUri;
-    string private s_happySvgImageUri;
-    string private s_sadSvgImageUri;
-
+    //////////////////////////////////////////////////////////
+    ////////////////  Type Declarations  /////////////////////
+    //////////////////////////////////////////////////////////
     enum Mood {
         HAPPY,
         SAD
     }
 
+    //////////////////////////////////////////////////////////
+    ////////////////  Storage Variables  /////////////////////
+    //////////////////////////////////////////////////////////
+    uint256 private s_tokenCounter;
+    string private s_imageUri;
+    string private s_happySvgImageUri;
+    string private s_sadSvgImageUri;
+
     mapping(uint256 tokenId => Mood) private s_tokenIdToMood;
+
+    //////////////////////////////////////////////////////////
+    //////////////////////  Functions  ///////////////////////
+    //////////////////////////////////////////////////////////
 
     // encoded svg images are passed to save gas
     // ImageUri's are passed not the tokenUri
@@ -67,11 +106,14 @@ contract MoodNft is ERC721 {
         return string(abi.encodePacked("data:application/json;base64,", Base64.encode(dataURI)));
     }
 
-    function getCurrentMood(uint256 tokenId) public view returns (uint256) {
+    //////////////////////////////////////////////////////////
+    ///////  external & public view & pure functions  ////////
+    //////////////////////////////////////////////////////////
+    function getCurrentMood(uint256 tokenId) external view returns (uint256) {
         return uint256(s_tokenIdToMood[tokenId]);
     }
 
-    function getTokenCounter() public view returns (uint256) {
+    function getTokenCounter() external view returns (uint256) {
         return s_tokenCounter;
     }
 }
