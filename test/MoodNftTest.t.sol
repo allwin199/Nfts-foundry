@@ -2,6 +2,7 @@
 pragma solidity 0.8.20;
 
 import {Test, console} from "forge-std/Test.sol";
+import {Vm} from "forge-std/Vm.sol";
 import {DeployMoodNft} from "../script/DeployMoodNft.s.sol";
 import {MoodNft} from "../src/MoodNft.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
@@ -94,5 +95,21 @@ contract MoodNftTest is Test {
 
         vm.expectRevert(MoodNft.MoodNft__OnlyOwnerCanFlipMood.selector);
         moodNft.flipMood(tokenId);
+    }
+
+    function test_LogsTokenId_AfterMinting() public {
+        vm.recordLogs();
+        vm.startPrank(user);
+        moodNft.mintNft();
+        vm.stopPrank();
+
+        uint256 mintedTokenId = moodNft.getTokenCounter() - 1;
+
+        Vm.Log[] memory entries = vm.getRecordedLogs();
+
+        bytes32 tokenIdInBytes = entries[0].topics[1];
+        uint256 tokenId = uint256(tokenIdInBytes);
+
+        assertEq(tokenId, mintedTokenId, "LogsTokenId");
     }
 }
