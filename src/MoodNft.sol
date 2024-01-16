@@ -5,6 +5,8 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 
 contract MoodNft is ERC721 {
+    error MoodNft__OnlyOwnerCanFlipMood();
+
     uint256 private s_tokenCounter;
 
     // dynamic tokenUri
@@ -28,6 +30,9 @@ contract MoodNft is ERC721 {
     }
 
     function flipMood(uint256 tokenId) public {
+        if (ownerOf(tokenId) != msg.sender) {
+            revert MoodNft__OnlyOwnerCanFlipMood();
+        }
         if (s_tokenIdToMood[tokenId] == Mood.HAPPY) {
             s_tokenIdToMood[tokenId] = Mood.SAD;
         } else {
@@ -51,17 +56,12 @@ contract MoodNft is ERC721 {
         }
 
         bytes memory dataURI = abi.encodePacked(
-            "{",
-            '"name": "',
+            '{"name":"',
             name(),
-            '"',
-            '"description": An NFT that reflects the mood of the owner, 100% on Chain!"',
-            '"image": "',
+            '", "description":"An NFT that reflects the mood of the owner, 100% on Chain!", ',
+            '"attributes": [{"trait_type": "moodiness", "value": 100}], "image":"',
             imageUri,
-            '"',
-            '"attributes": [{"trait_type": "moodiness","value": 100}]"',
-            '"',
-            "}"
+            '"}'
         );
 
         return string(abi.encodePacked("data:application/json;base64,", Base64.encode(dataURI)));
